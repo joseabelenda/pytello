@@ -8,7 +8,7 @@ import time
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
 
-DEFAULT_DISTANCE = 0.30
+DEFAULT_DISTANCE = 30
 DEFAULT_SPEED = 10
 DEFAULT_DEGREE = 10
 
@@ -31,16 +31,16 @@ class DroneManager(object):
 
         self.response = None
         self.stop_event = threading.Event()
-        self._response_tread = threading.Thread(
+        self._response_thread = threading.Thread(
             target=self.receive_response, args=(self.stop_event, ))
-        self._response_tread.start()
+        self._response_thread.start()
 
         self.send_command('command')
         self.send_command('streamon')
         self.set_speed(self.speed)
 
     def receive_response(self, stop_event):
-        while not stop_event.isz_set():
+        while not stop_event.is_set():
             try:
                 self.response, ip = self.socket.recvfrom(3000)
                 logger.info({'action': 'receive_response',
@@ -117,11 +117,13 @@ class DroneManager(object):
     def stop(self):
         self.stop_event.set()
         retry = 0
-        while self._response_thread.isAlive():
+
+        while self._response_thread.is_alive():
             time.sleep(0.3)
             if retry > 30:
                 break
             retry += 1
+
         self.socket.close()
 
     def takeoff(self):
@@ -134,6 +136,15 @@ class DroneManager(object):
 drone_manager = DroneManager()
 
 drone_manager.takeoff()
+time.sleep(5)
+
+drone_manager.up()
+time.sleep(5)
+
+drone_manager.right()
+time.sleep(5)
+
+drone_manager.left()
 time.sleep(5)
 
 drone_manager.land()
