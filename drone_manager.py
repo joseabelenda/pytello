@@ -27,7 +27,11 @@ class DroneManager(object):
         self.speed = speed
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.bind((self.host_ip, self.host_port))
+
+        try:
+            self.socket.bind((self.host_ip, self.host_port))
+        except:
+            raise Exception('Was not possible to connect to drone')
 
         self.response = None
         self.stop_event = threading.Event()
