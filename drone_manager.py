@@ -137,19 +137,19 @@ class DroneManager(object):
         return self.move('up', distance)
 
 
-drone_manager = DroneManager()
+# drone_manager = DroneManager()
 
-drone_manager.takeoff()
-time.sleep(5)
+# drone_manager.takeoff()
+# time.sleep(5)
 
-drone_manager.up()
-time.sleep(5)
+# drone_manager.up()
+# time.sleep(5)
 
-drone_manager.right()
-time.sleep(5)
+# drone_manager.right()
+# time.sleep(5)
 
-drone_manager.left()
-time.sleep(5)
+# drone_manager.left()
+# time.sleep(5)
 
-drone_manager.land()
-drone_manager.stop()
+# drone_manager.land()
+# drone_manager.stop()

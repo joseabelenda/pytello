@@ -2,7 +2,6 @@
 from flask import Flask, jsonify, request
 import logging
 import sys
-from drone_manager import DroneManager
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
@@ -17,50 +16,19 @@ livros = [
     }
 ]
 
-drone_manager = None
-
-try:
-    drone_manager = DroneManager()
-except Exception as exception:
-    logger.error(exception)
-
-
-@app.route('/takeoff', methods=['POST'])
-def takeoff():
-    print('takeoff')
-    if drone_manager:
-        try:
-            drone_manager.takeoff()
-            return jsonify('OK')
-
-        except Exception as exception:
-            logger.error(exception)
-            return jsonify('ERROR')
-    else:
-        logger.error('Drone not connected')
-        return jsonify('ERROR - Drone not connected')
-
-
-@app.route('/land', methods=['POST'])
-def land():
-    print('land')
-    if drone_manager:
-        try:
-            drone_manager.land()
-            return jsonify('OK')
-
-        except Exception as exception:
-            logger.error(exception)
-            return jsonify('ERROR')
-    else:
-        logger.error('Drone not connected')
-        return jsonify('ERROR - Drone not connected')
-
 
 @app.route('/livros', methods=['GET'])
 def get_livros():
     print('get_livros')
     return jsonify(livros)
+
+
+@app.route('/drone/patrol', methods=['POST'])
+def patrol():
+    print('patrol')
+    json = request.get_json()
+    print(json)
+    return jsonify(json)
 
 
 def run():
